@@ -1,0 +1,406 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Próximamente — Curandero</title>
+    <meta name="description" content="Las redes sociales de Curandero están en camino. Pronto podrás seguirnos en todas las plataformas.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'StellaMystica';
+            src: url('assets/GL-StellaMystica.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        h1, h2, h3, .stella { font-family: 'StellaMystica', serif; font-weight: normal; }
+
+        /* ── Full-screen loading overlay ── */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        /* Background art overlay */
+        .loading-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('assets/Bg_gameplay1.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.07;
+            filter: blur(2px);
+        }
+
+        /* Vignette */
+        .loading-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 30%, var(--bg-dark) 80%);
+        }
+
+        /* Animated candle glow */
+        .candle-glow {
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 163, 92, 0.06) 0%, transparent 70%);
+            animation: candleFlicker 3s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes candleFlicker {
+            0%   { transform: scale(0.9); opacity: 0.6; }
+            33%  { transform: scale(1.05) translateX(8px); opacity: 0.9; }
+            66%  { transform: scale(0.95) translateX(-5px); opacity: 0.7; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* Jaguar mask ornament */
+        .mask-ornament {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 900px;
+            height: 100%;
+            background-image: url('assets/mix station bg.png');
+            background-size: cover;
+            background-position: center top;
+            opacity: 0.04;
+            pointer-events: none;
+        }
+
+        .loading-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 700px;
+            padding: 2rem;
+        }
+
+        .loading-logo {
+            width: 340px;
+            max-width: 90vw;
+            margin: 0 auto 2.5rem;
+            display: block;
+            filter: invert(1) drop-shadow(0 0 40px rgba(212, 163, 92, 0.2));
+            animation: logoPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { filter: invert(1) drop-shadow(0 0 20px rgba(212, 163, 92, 0.1)); }
+            50%       { filter: invert(1) drop-shadow(0 0 50px rgba(212, 163, 92, 0.35)); }
+        }
+
+        .loading-title {
+            font-family: 'StellaMystica', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            color: var(--accent);
+            letter-spacing: 4px;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+            text-shadow: 0 0 40px rgba(212, 163, 92, 0.3);
+        }
+
+        .loading-subtitle {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4rem;
+            opacity: 0.7;
+        }
+
+        /* Ornamental divider */
+        .ornament-line {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 4rem;
+        }
+
+        .ornament-line::before,
+        .ornament-line::after {
+            content: '';
+            flex: 1;
+            max-width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212, 163, 92, 0.4));
+        }
+
+        .ornament-line::after {
+            background: linear-gradient(90deg, rgba(212, 163, 92, 0.4), transparent);
+        }
+
+        .ornament-glyph {
+            font-size: 1.2rem;
+            color: var(--accent);
+            opacity: 0.5;
+            letter-spacing: 8px;
+        }
+
+        /* Network name & platform label */
+        .network-badge {
+            display: inline-block;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--primary);
+            border: 1px solid rgba(194, 89, 59, 0.4);
+            padding: 0.35rem 1.2rem;
+            border-radius: 50px;
+            background: rgba(194, 89, 59, 0.08);
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        /* Progress bar */
+        .progress-wrap {
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto 1.5rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(212, 163, 92, 0.1);
+            border-radius: 50px;
+            overflow: hidden;
+            height: 4px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent));
+            border-radius: 50px;
+            animation: progressAnim 3s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(212, 163, 92, 0.4);
+        }
+
+        @keyframes progressAnim {
+            0%   { width: 15%; opacity: 0.6; }
+            50%  { width: 75%; opacity: 1; }
+            100% { width: 15%; opacity: 0.6; }
+        }
+
+        .progress-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            opacity: 0.5;
+            margin-bottom: 3.5rem;
+        }
+
+        /* Message */
+        .loading-message {
+            font-family: 'StellaMystica', serif;
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            color: var(--accent-light);
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .loading-body {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            max-width: 480px;
+            margin: 0 auto 3rem;
+        }
+
+        /* Buttons */
+        .loading-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-back {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            border: 1px solid rgba(212, 163, 92, 0.15);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            background: rgba(14, 21, 17, 0.5);
+        }
+
+        .btn-back:hover {
+            color: var(--accent);
+            border-color: rgba(212, 163, 92, 0.35);
+            background: rgba(31, 59, 40, 0.3);
+        }
+
+        /* Floating particles specific to this page */
+        .spark {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkFloat linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes sparkFloat {
+            0%   { opacity: 0; transform: translateY(0) scale(1); }
+            10%  { opacity: 0.8; }
+            90%  { opacity: 0.4; }
+            100% { opacity: 0; transform: translateY(-120vh) scale(0.3); }
+        }
+
+        /* Back nav */
+        .mini-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 200;
+            padding: 1.2rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(180deg, rgba(7,9,8,0.8) 0%, transparent 100%);
+        }
+
+        .mini-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.82rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mini-nav a:hover { color: var(--accent); }
+
+        .mini-nav-logo {
+            height: 60px;
+            opacity: 0.6;
+            filter: invert(1);
+            transition: opacity 0.3s ease;
+        }
+
+        .mini-nav-logo:hover { opacity: 1; }
+
+        /* Footer also inherited */
+    </style>
+</head>
+<body class="inner-page" style="overflow: hidden; height: 100vh;">
+
+    <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+    <!-- Mini nav -->
+    <nav class="mini-nav">
+        <a href="index.html">← Volver al inicio</a>
+        <a href="index.html">
+            <img src="assets/Title Main.png" alt="Curandero" class="mini-nav-logo">
+        </a>
+        <a href="https://asmodeu5.itch.io/curandero" target="_blank" rel="noopener">Jugar ahora ↗</a>
+    </nav>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-bg"></div>
+        <div class="mask-ornament"></div>
+        <div class="candle-glow"></div>
+
+        <!-- Spark particles injected by JS -->
+
+        <div class="loading-content">
+            <img src="assets/Title Main.png" alt="Curandero" class="loading-logo">
+
+            <p class="loading-subtitle">UtoFilms · 2026</p>
+
+            <span class="network-badge" id="platform-badge">Red Social</span>
+
+            <div class="ornament-line">
+                <span class="ornament-glyph">✦ ✦ ✦</span>
+            </div>
+
+            <p class="loading-message">Preparando el Altar Digital</p>
+            <p class="loading-body">
+                Nuestras redes sociales están tomando forma, igual que las mezclas en el mortero sagrado. Pronto podrás seguir el camino de Curandero en todas las plataformas. Mantén encendida tu vela.
+            </p>
+
+            <div class="progress-wrap">
+                <div class="progress-bar"></div>
+            </div>
+            <p class="progress-label">Invocando presencia digital...</p>
+
+            <div class="loading-actions">
+                <a href="index.html" class="cta-button" style="text-decoration: none; font-size: 0.9rem; padding: 0.9rem 2rem;">← Regresar al Pueblo</a>
+                <a href="https://asmodeu5.itch.io/curandero" target="_blank" rel="noopener" class="btn-back">
+                    Jugar en itch.io ↗
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Detect which platform link was clicked from sessionStorage or URL params
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const platform = params.get('red') || 'Red Social';
+            const names = {
+                'discord': 'Discord',
+                'instagram': 'Instagram',
+                'twitter': 'Twitter / X',
+                'youtube': 'YouTube',
+                'tiktok': 'TikTok',
+                'facebook': 'Facebook'
+            };
+            const badge = document.getElementById('platform-badge');
+            if (badge && names[platform]) badge.textContent = names[platform];
+
+            // Generate floating sparks
+            const screen = document.querySelector('.loading-screen');
+            for (let i = 0; i < 22; i++) {
+                const spark = document.createElement('div');
+                spark.className = 'spark';
+                const size = Math.random() * 3 + 1;
+                spark.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    background: hsla(${35 + Math.random()*20}, 70%, ${55 + Math.random()*20}%, 0.9);
+                    box-shadow: 0 0 ${size * 3}px hsla(${40 + Math.random()*15}, 80%, 65%, 0.5);
+                    animation-duration: ${5 + Math.random() * 8}s;
+                    animation-delay: ${Math.random() * 6}s;
+                `;
+                screen.appendChild(spark);
+            }
+        })();
+    </script>
+</body>
+</html>

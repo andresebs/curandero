@@ -1,0 +1,457 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Equipo — UtoFilms · Curandero</title>
+    <meta name="description" content="Conoce al equipo detrás de Curandero: UtoFilms, conformado por Andres Moreno, Ronald Cantor y Diego Cerra.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'StellaMystica';
+            src: url('assets/GL-StellaMystica.ttf') format('truetype');
+            font-weight: normal; font-style: normal; font-display: swap;
+        }
+        h1, h2, h3, .stella { font-family: 'StellaMystica', serif; font-weight: normal; letter-spacing: 2px; }
+
+        /* ── Studio Hero ── */
+        .studio-hero {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 5rem;
+            position: relative;
+            background: var(--bg-section);
+            overflow: hidden;
+        }
+        .studio-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('assets/mix station bg.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.04;
+        }
+        .studio-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 60%, rgba(212,163,92,0.04) 0%, transparent 65%);
+        }
+        .studio-hero-inner {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+        }
+        .studio-logo-text {
+            font-family: 'StellaMystica', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            color: var(--accent);
+            letter-spacing: 6px;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 60px rgba(212,163,92,0.2);
+        }
+        .studio-tagline {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            opacity: 0.7;
+            margin-bottom: 2rem;
+        }
+        .studio-desc {
+            font-size: 1.1rem;
+            color: #b8b1a4;
+            line-height: 1.9;
+        }
+
+        /* ── Team Grid ── */
+        .team-section {
+            background: var(--bg-dark);
+            padding: 7rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .team-section-inner {
+            max-width: 1100px;
+            width: 100%;
+        }
+        .team-section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+        .team-cards-main {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            margin-bottom: 6rem;
+        }
+        .team-card-main {
+            background: rgba(14, 21, 17, 0.6);
+            border: 1px solid rgba(212, 163, 92, 0.12);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.45s var(--transition-bounce);
+            text-align: center;
+        }
+        .team-card-main:hover {
+            transform: translateY(-10px);
+            border-color: rgba(212,163,92,0.3);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+        .team-card-top {
+            padding: 3rem 2rem 2rem;
+            background: linear-gradient(180deg, rgba(31,59,40,0.15) 0%, transparent 100%);
+            border-bottom: 1px solid rgba(212,163,92,0.07);
+        }
+        .team-avatar-big {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            background: rgba(31,59,40,0.4);
+            border: 2px solid rgba(212,163,92,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .team-avatar-big::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.06) 0%, transparent 60%);
+        }
+        .team-member-name {
+            font-family: 'StellaMystica', serif;
+            font-size: 1.8rem;
+            color: var(--accent-light);
+            display: block;
+            margin-bottom: 0.3rem;
+            letter-spacing: 1.5px;
+        }
+        .team-member-role {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0;
+        }
+        .team-card-bottom {
+            padding: 2rem;
+        }
+        .team-card-bottom p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        .team-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        .skill-tag {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.72rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid rgba(212,163,92,0.15);
+            color: var(--text-muted);
+            background: rgba(14,21,17,0.4);
+        }
+
+        /* ── UtoFilms Mission ── */
+        .mission-section {
+            background: var(--bg-section);
+            padding: 6rem 2rem;
+            display: flex;
+            justify-content: center;
+        }
+        .mission-inner {
+            max-width: 1000px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+        .mission-text h2 { margin-bottom: 1.5rem; }
+        .mission-text p { font-size: 1.05rem; color: #b8b1a4; line-height: 1.9; margin-bottom: 1.2rem; }
+        .mission-text p:last-child { margin-bottom: 0; }
+        .mission-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .mission-stat {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.2rem 1.5rem;
+            background: rgba(14,21,17,0.5);
+            border: 1px solid rgba(212,163,92,0.08);
+            border-radius: var(--radius-sm);
+            transition: all 0.3s ease;
+        }
+        .mission-stat:hover {
+            background: rgba(31,59,40,0.3);
+            border-color: rgba(212,163,92,0.2);
+        }
+        .mission-stat-icon { font-size: 2rem; }
+        .mission-stat-text strong {
+            font-family: 'StellaMystica', serif;
+            font-size: 1.2rem;
+            color: var(--accent-light);
+            display: block;
+            font-weight: normal;
+        }
+        .mission-stat-text span {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .team-cards-main { grid-template-columns: 1fr; max-width: 450px; margin-left: auto; margin-right: auto; }
+            .mission-inner { grid-template-columns: 1fr; gap: 3rem; }
+        }
+    </style>
+</head>
+<body class="inner-page">
+
+    <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+    <nav id="main-nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <img src="assets/Title Main.png" alt="Curandero" class="nav-logo-img">
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="historia.html">Historia</a></li>
+                <li><a href="sanacion.html">Sanaci&#xF3;n</a></li>
+                <li><a href="juego.html">El Juego</a></li>
+                <li><a href="herbolario.html">Herbolario</a></li>
+                <li><a href="tutorial.html">Tutorial</a></li>
+                <li><a href="mecanicas.html">Mec&#xE1;nicas</a></li>
+                <li><a href="personajes.html">Personajes</a></li>
+                <li><a href="comunidad.html">Comunidad</a></li>
+                <li><a href="equipo.html" style="color: var(--accent);">Equipo</a></li>
+                <li><a href="desarrollo.html">Desarrollo</a></li>
+            </ul>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main id="main-content">
+
+        <!-- Studio Hero -->
+        <section class="studio-hero">
+            <div class="studio-hero-inner reveal-el">
+                <div class="glyph-deco">✦</div>
+                <div class="studio-logo-text">UtoFilms</div>
+                <p class="studio-tagline">Estudio Independiente · Colombia · 2026</p>
+                <p class="studio-desc">Un equipo pequeño con una visión grande: rescatar las tradiciones culturales de América Latina a través del lenguaje universal de los videojuegos. Curandero es nuestro primer capítulo.</p>
+            </div>
+        </section>
+
+        <!-- Team -->
+        <section class="team-section">
+            <div class="team-section-inner">
+                <div class="team-section-header reveal-el">
+                    <div class="glyph-deco">◆</div>
+                    <h2>Los Curanderos Detrás del Juego</h2>
+                    <p style="max-width:600px; margin:0 auto; color:#b8b1a4; font-size:1.05rem;">Tres creadores unidos por la pasión por el arte, la tecnología y la memoria cultural de sus raíces.</p>
+                </div>
+
+                <div class="team-cards-main reveal-el">
+
+                    <!-- Andres Moreno -->
+                    <div class="team-card-main">
+                        <div class="team-card-top">
+                            <div class="team-avatar-big">🎨</div>
+                            <span class="team-member-name">Andres Moreno</span>
+                            <span class="team-member-role">Director de Arte & Diseño</span>
+                        </div>
+                        <div class="team-card-bottom">
+                            <p>Responsable de la identidad visual de Curandero. Andres diseñó cada fondo, ilustró los personajes y definió la paleta monocromática que da vida a este mundo de sombras y velas. Su mirada artística convierte la oscuridad en poesía visual.</p>
+                            <div class="team-skills">
+                                <span class="skill-tag">Ilustración Digital</span>
+                                <span class="skill-tag">Dirección de Arte</span>
+                                <span class="skill-tag">UI / UX</span>
+                                <span class="skill-tag">Fotografía</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ronald Cantor -->
+                    <div class="team-card-main">
+                        <div class="team-card-top">
+                            <div class="team-avatar-big">⚙️</div>
+                            <span class="team-member-name">Ronald Cantor</span>
+                            <span class="team-member-role">Programación & Game Design</span>
+                        </div>
+                        <div class="team-card-bottom">
+                            <p>El arquitecto de la experiencia. Ronald construyó el sistema de generación procedural de pacientes, la lógica de recetas, el reloj de cuenta regresiva y cada interacción que hace de Curandero un juego fluido y adictivo bajo presión.</p>
+                            <div class="team-skills">
+                                <span class="skill-tag">Game Dev</span>
+                                <span class="skill-tag">Sistemas Procedurales</span>
+                                <span class="skill-tag">JavaScript</span>
+                                <span class="skill-tag">Game Design</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Diego Cerra -->
+                    <div class="team-card-main">
+                        <div class="team-card-top">
+                            <div class="team-avatar-big">📜</div>
+                            <span class="team-member-name">Diego Cerra</span>
+                            <span class="team-member-role">Narrativa & Dirección Creativa</span>
+                        </div>
+                        <div class="team-card-bottom">
+                            <p>Guardián de la historia y la coherencia del universo Curandero. Diego investigó las tradiciones médicas precolombinas, redactó los diálogos de los pacientes, construyó el lore del pueblo y dirige la visión creativa del proyecto.</p>
+                            <div class="team-skills">
+                                <span class="skill-tag">Escritura Narrativa</span>
+                                <span class="skill-tag">Investigación Histórica</span>
+                                <span class="skill-tag">Dirección Creativa</span>
+                                <span class="skill-tag">Diseño de Personajes</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Mission -->
+                <div class="mission-section" style="background: transparent; padding: 0;">
+                    <div class="mission-inner reveal-el">
+                        <div class="mission-text">
+                            <div class="glyph-deco" style="text-align:left;">✦</div>
+                            <h2>Nuestra Misión</h2>
+                            <p>UtoFilms nació de una pregunta sencilla: ¿por qué los videojuegos latinoamericanos raramente hablan de América Latina? El continente tiene una riqueza cultural, histórica y mitológica incomparable que el mundo de los videojuegos apenas ha comenzado a explorar.</p>
+                            <p>Curandero es nuestro primer intento de cambiar eso. Un juego hecho en Colombia, con ingredientes reales de la medicina ancestral, personajes inspirados en la diversidad étnica de la región y una historia que honra a los curanderos que mantuvieron vivo el conocimiento cuando todo lo demás fue silenciado.</p>
+                            <p>Creemos que los juegos pueden ser vehículos de memoria cultural. Cada partida de Curandero es un acto pequeño pero genuino de preservación.</p>
+                        </div>
+                        <div class="mission-stats">
+                            <div class="mission-stat">
+                                <span class="mission-stat-icon">🌎</span>
+                                <div class="mission-stat-text">
+                                    <strong>Hecho en Colombia</strong>
+                                    <span>Diseñado y desarrollado íntegramente en Latinoamérica</span>
+                                </div>
+                            </div>
+                            <div class="mission-stat">
+                                <span class="mission-stat-icon">🏛️</span>
+                                <div class="mission-stat-text">
+                                    <strong>Investigación Auténtica</strong>
+                                    <span>Ingredientes y tradiciones basadas en registros históricos reales</span>
+                                </div>
+                            </div>
+                            <div class="mission-stat">
+                                <span class="mission-stat-icon">🎮</span>
+                                <div class="mission-stat-text">
+                                    <strong>Juego Libre y Gratuito</strong>
+                                    <span>Disponible para todos en itch.io sin costo alguno</span>
+                                </div>
+                            </div>
+                            <div class="mission-stat">
+                                <span class="mission-stat-icon">🌱</span>
+                                <div class="mission-stat-text">
+                                    <strong>Proyecto en Crecimiento</strong>
+                                    <span>Curandero es solo el primer capítulo de UtoFilms</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CTA Play -->
+        <section style="background: var(--bg-section); padding: 5rem 2rem; display:flex; justify-content:center; align-items:center; min-height:auto; border-top: 1px solid rgba(212,163,92,0.06);">
+            <div class="reveal-el" style="text-align:center; max-width:600px;">
+                <div class="glyph-deco">✦ ✦ ✦</div>
+                <h2>Juega el Resultado</h2>
+                <p style="color:#b8b1a4; margin-bottom:2.5rem;">Curandero está disponible de forma gratuita en itch.io. Es el trabajo de tres personas que creen que las historias de América Latina merecen ser jugadas.</p>
+                <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+                    <a href="https://asmodeu5.itch.io/curandero" target="_blank" rel="noopener" class="cta-button" style="text-decoration:none;">
+                        Jugar en itch.io ↗
+                    </a>
+                    <a href="index.html" class="cta-button secondary" style="text-decoration:none;">
+                        Ver el Sitio
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <div class="footer-content" style="max-width:1100px;">
+                <img src="assets/Title Main.png" alt="Curandero" class="footer-logo">
+
+                <div class="footer-links">
+                    <a href="index.html">Inicio</a><a href="historia.html">Historia</a><a href="sanacion.html">Sanaci&#xF3;n</a>
+                    <a href="juego.html">El Juego</a><a href="herbolario.html">Herbolario</a><a href="tutorial.html">Tutorial</a>
+                    <a href="mecanicas.html">Mec&#xE1;nicas</a><a href="personajes.html">Personajes</a><a href="comunidad.html">Comunidad</a>
+                    <a href="equipo.html">Equipo</a><a href="desarrollo.html">Desarrollo</a>
+                </div>
+
+                <!-- Social media -->
+                <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:0.5rem;">
+                    <a href="proximamente.html?red=discord" class="social-link" aria-label="Discord" title="Discord">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.08.11 18.1.13 18.116a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+                    </a>
+                    <a href="proximamente.html?red=instagram" class="social-link" aria-label="Instagram" title="Instagram">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+                    </a>
+                    <a href="proximamente.html?red=twitter" class="social-link" aria-label="Twitter/X" title="Twitter/X">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                    <a href="proximamente.html?red=youtube" class="social-link" aria-label="YouTube" title="YouTube">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                    <a href="proximamente.html?red=tiktok" class="social-link" aria-label="TikTok" title="TikTok">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V9.15a8.16 8.16 0 0 0 4.77 1.52V7.2a4.85 4.85 0 0 1-1-.51z"/></svg>
+                    </a>
+                </div>
+
+                <!-- Itch.io link prominent -->
+                <a href="https://asmodeu5.itch.io/curandero" target="_blank" rel="noopener"
+                   style="display:inline-flex; align-items:center; gap:0.6rem; margin-top:1rem; text-decoration:none; color:var(--accent); font-family:'Outfit',sans-serif; font-size:0.85rem; letter-spacing:1px; border:1px solid rgba(212,163,92,0.2); padding:0.5rem 1.4rem; border-radius:50px; transition: all 0.3s ease; background:rgba(212,163,92,0.05);"
+                   onmouseover="this.style.background='rgba(212,163,92,0.12)'; this.style.borderColor='rgba(212,163,92,0.4)'"
+                   onmouseout="this.style.background='rgba(212,163,92,0.05)'; this.style.borderColor='rgba(212,163,92,0.2)'">
+                    🎮 Jugar Curandero en itch.io ↗
+                </a>
+
+                <div style="border-top:1px solid rgba(212,163,92,0.05); padding-top:1.5rem; margin-top:1rem; display:flex; flex-direction:column; align-items:center; gap:0.3rem;">
+                    <p style="font-size:0.78rem; color:#3a3a3a; margin:0;">Un proyecto de <strong style="color:#555;">UtoFilms</strong> — Andres Moreno · Ronald Cantor · Diego Cerra</p>
+                    <p style="font-size:0.75rem; color:#333; margin:0;">&copy; 2026 Curandero Game. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

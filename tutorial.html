@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial del Curandero — Curandero</title>
+    <meta name="description" content="Aprende a sanar. Guía completa del tutorial de Curandero: diagnóstico, recetario, preparación y entrega del remedio.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        @font-face { font-family:'StellaMystica'; src:url('assets/GL-StellaMystica.ttf') format('truetype'); font-display:swap; }
+        h1,h2,h3,.stella { font-family:'StellaMystica',serif; font-weight:normal; letter-spacing:2px; }
+
+        .page-hero { min-height:45vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:8rem 2rem 4rem; background:var(--bg-section); position:relative; overflow:hidden; }
+        .page-hero::before { content:''; position:absolute; inset:0; background-image:url('assets/Bg_gameplay1.png'); background-size:cover; background-position:center; opacity:0.07; }
+        .page-hero::after { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 80%, rgba(212,163,92,0.04) 0%, transparent 60%); }
+        .page-hero-inner { position:relative; z-index:2; max-width:750px; }
+
+        .tutorial-badge { display:inline-block; font-family:'Outfit',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--primary); border:1px solid rgba(194,89,59,0.4); padding:0.35rem 1.2rem; border-radius:50px; background:rgba(194,89,59,0.08); margin-bottom:1.5rem; }
+
+        /* Video */
+        .video-section { background:var(--bg-dark); padding:6rem 2rem; display:flex; flex-direction:column; align-items:center; }
+        .video-frame { width:100%; max-width:1000px; aspect-ratio:16/9; border-radius:var(--radius-lg); overflow:hidden; border:1px solid rgba(212,163,92,0.25); box-shadow:0 30px 80px rgba(0,0,0,0.8); position:relative; }
+        .video-frame video { width:100%; height:100%; object-fit:cover; display:block; }
+
+        /* Steps */
+        .steps-section { background:var(--bg-section); padding:7rem 2rem; display:flex; flex-direction:column; align-items:center; }
+        .steps-inner { max-width:1100px; width:100%; }
+        .steps-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:1.8rem; margin-top:4rem; }
+        .step-card { background:rgba(14,21,17,0.6); border:1px solid rgba(212,163,92,0.1); border-radius:var(--radius-md); padding:2.5rem 2rem; transition:all 0.4s var(--transition-smooth); }
+        .step-card:hover { border-color:rgba(212,163,92,0.3); background:rgba(31,59,40,0.35); transform:translateY(-6px); box-shadow:0 20px 40px rgba(0,0,0,0.4); }
+        .step-num { font-family:'StellaMystica',serif; font-size:3rem; color:var(--accent); opacity:0.35; line-height:1; display:block; margin-bottom:0.8rem; }
+        .step-card h3 { font-size:1.25rem; color:var(--accent-light); margin-bottom:0.8rem; }
+        .step-card p { font-size:0.95rem; color:var(--text-muted); line-height:1.8; margin-bottom:0; }
+
+        /* Tips */
+        .tips-section { background:var(--bg-dark); padding:6rem 2rem; display:flex; justify-content:center; }
+        .tips-inner { max-width:900px; width:100%; }
+        .tips-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:3rem; }
+        .tip-card { background:rgba(14,21,17,0.5); border:1px solid rgba(212,163,92,0.08); border-left:3px solid var(--accent); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:1.5rem 1.8rem; transition:all 0.3s ease; }
+        .tip-card:hover { background:rgba(31,59,40,0.3); border-left-color:var(--primary); }
+        .tip-card strong { color:var(--accent-light); font-size:1rem; display:block; margin-bottom:0.4rem; }
+        .tip-card p { font-size:0.9rem; color:var(--text-muted); margin-bottom:0; line-height:1.7; }
+
+        @media(max-width:768px) { .steps-grid,.tips-grid { grid-template-columns:1fr; } }
+    </style>
+</head>
+<body class="inner-page">
+    <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+    <nav id="main-nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo"><img src="assets/Title Main.png" alt="Curandero" class="nav-logo-img"></a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="historia.html">Historia</a></li>
+                <li><a href="sanacion.html">Sanaci&#xF3;n</a></li>
+                <li><a href="juego.html">El Juego</a></li>
+                <li><a href="herbolario.html">Herbolario</a></li>
+                <li><a href="tutorial.html" style="color: var(--accent);">Tutorial</a></li>
+                <li><a href="mecanicas.html">Mec&#xE1;nicas</a></li>
+                <li><a href="personajes.html">Personajes</a></li>
+                <li><a href="comunidad.html">Comunidad</a></li>
+                <li><a href="equipo.html">Equipo</a></li>
+                <li><a href="desarrollo.html">Desarrollo</a></li>
+            </ul>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <main id="main-content">
+
+        <section class="page-hero">
+            <div class="page-hero-inner reveal-el">
+                <span class="tutorial-badge">Aprende a Sanar</span>
+                <div class="glyph-deco">⚗</div>
+                <h1>Tutorial del Curandero</h1>
+                <p style="font-size:1.1rem; color:#b8b1a4; margin-bottom:0;">Dominar el arte de la sanación requiere paciencia, observación y una conexión profunda con los elementos. Este tutorial te guiará en tus primeros pasos como guardián del pueblo.</p>
+            </div>
+        </section>
+
+        <!-- Tutorial Video -->
+        <section class="video-section">
+            <div class="reveal-el" style="text-align:center; margin-bottom:3rem;">
+                <div class="glyph-deco">▶</div>
+                <h2>Video Tutorial Oficial</h2>
+                <p style="max-width:600px; margin:0 auto; color:#b8b1a4;">Observa el proceso completo de diagnóstico, preparación y entrega del remedio antes de enfrentarte a tu primer paciente.</p>
+            </div>
+            <div class="video-frame reveal-el">
+                <video controls preload="metadata" poster="assets/mix station bg.png">
+                    <source src="assets/tutorial-render.mp4" type="video/mp4">
+                    Tu navegador no soporta la reproducción de video.
+                </video>
+            </div>
+        </section>
+
+        <!-- Steps -->
+        <section class="steps-section">
+            <div class="steps-inner">
+                <div class="reveal-el" style="text-align:center;">
+                    <div class="glyph-deco">✦</div>
+                    <h2>Los Seis Pasos del Curandero</h2>
+                    <p style="max-width:600px; margin:0 auto; color:#b8b1a4;">Cada consulta sigue el mismo ritual sagrado. Aprende cada etapa hasta que se vuelva instinto.</p>
+                </div>
+                <div class="steps-grid reveal-el">
+                    <div class="step-card">
+                        <span class="step-num">I</span>
+                        <h3>Escucha al Paciente</h3>
+                        <p>Lee sus palabras con atención. El color destacado en el diálogo revela la naturaleza de su mal: rojo para el fuego, azul para el frío, verde para el veneno. La cantidad de veces que aparece indica la intensidad.</p>
+                    </div>
+                    <div class="step-card">
+                        <span class="step-num">II</span>
+                        <h3>Consulta el Recetario</h3>
+                        <p>El libro sagrado tiene una tabla de símbolos. Localiza la esencia del mal en la primera columna y la intensidad en la fila superior. La intersección te dará los ingredientes necesarios.</p>
+                    </div>
+                    <div class="step-card">
+                        <span class="step-num">III</span>
+                        <h3>Selecciona los Ingredientes</h3>
+                        <p>Elige los ingredientes de la categoría correcta. Fuego requiere ingredientes minerales, frío necesita ingredientes animales, y veneno se trata con ingredientes vegetales y fúngicos.</p>
+                    </div>
+                    <div class="step-card">
+                        <span class="step-num">IV</span>
+                        <h3>Prepara la Mezcla</h3>
+                        <p>Arrastra los ingredientes al mortero sagrado. La cantidad importa: un ingrediente de más puede invertir el efecto del remedio. Confía en los símbolos del recetario sobre cualquier intuición.</p>
+                    </div>
+                    <div class="step-card">
+                        <span class="step-num">V</span>
+                        <h3>Entrega el Remedio</h3>
+                        <p>Presenta la mezcla al paciente antes de que el reloj llegue a cero. Una curación exitosa fortalece tu cadena de aciertos y multiplica tu puntuación. La velocidad también suma puntos.</p>
+                    </div>
+                    <div class="step-card">
+                        <span class="step-num">VI</span>
+                        <h3>Aprende y Avanza</h3>
+                        <p>Cada error es información. Si el paciente no se cura por completo, revisa qué elemento fallaste. Con cada jornada dominarás patrones más complejos y tiempos más cortos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tips -->
+        <section class="tips-section">
+            <div class="tips-inner">
+                <div class="reveal-el" style="text-align:center; margin-bottom:0;">
+                    <h2>Consejos del Anciano</h2>
+                    <p style="color:#b8b1a4; max-width:500px; margin:0 auto;">Sabiduría transmitida por los curanderos que vinieron antes que tú.</p>
+                </div>
+                <div class="tips-grid reveal-el">
+                    <div class="tip-card">
+                        <strong>🔴 No confundas intensidades</strong>
+                        <p>Un síntoma mencionado una vez requiere un ingrediente; dos veces, dos ingredientes; tres veces, tres. Cuenta con cuidado antes de mezclar.</p>
+                    </div>
+                    <div class="tip-card">
+                        <strong>⏱️ Gestiona el tiempo visual</strong>
+                        <p>Glancing at the timer after reading the patient's dialogue tells you how urgent the situation is. Prioritize speed only after your diagnosis is certain.</p>
+                    </div>
+                    <div class="tip-card">
+                        <strong>📖 Memoriza las categorías</strong>
+                        <p>Fuego→mineral, Frío→animal, Veneno→vegetal. Una vez que esto sea automático, la velocidad de preparación se duplica. Practica hasta que sea reflejo.</p>
+                    </div>
+                    <div class="tip-card">
+                        <strong>🔗 Protege la cadena</strong>
+                        <p>Una cadena de aciertos consecutivos multiplica tus puntos. Si dudas de un remedio, es mejor tomarte un segundo más que entregar algo incorrecto y romper la racha.</p>
+                    </div>
+                    <div class="tip-card">
+                        <strong>🌿 Las mezclas no son reversibles</strong>
+                        <p>Una vez que un ingrediente entra al mortero, la única forma de corregir es limpiar el recipiente y empezar de nuevo. La precisión vale más que la rapidez impulsiva.</p>
+                    </div>
+                    <div class="tip-card">
+                        <strong>👁️ Lee las pistas visuales</strong>
+                        <p>El aspecto físico del paciente también da pistas sutiles: rojez en la piel sugiere fuego, palidez señala frío, y un tono verdoso apunta al veneno.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section style="background:var(--bg-section); padding:5rem 2rem; display:flex; justify-content:center; min-height:auto; border-top:1px solid rgba(212,163,92,0.06);">
+            <div class="reveal-el" style="text-align:center; max-width:600px;">
+                <h2>¿Listo para Sanar?</h2>
+                <p style="color:#b8b1a4; margin-bottom:2.5rem;">El primer paciente ya espera al final del sendero. Aplica lo que aprendiste y salva al pueblo.</p>
+                <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+                    <a href="https://asmodeu5.itch.io/curandero" target="_blank" rel="noopener" class="cta-button" style="text-decoration:none;">🎮 Jugar Ahora en itch.io ↗</a>
+                    <a href="mecanicas.html" class="cta-button secondary" style="text-decoration:none;">Ver Mecánicas</a>
+                </div>
+            </div>
+        </section>
+
+        <footer id="footer">
+            <div class="footer-content" style="max-width:1100px;">
+                <img src="assets/Title Main.png" alt="Curandero" class="footer-logo">
+                <div class="footer-links">
+                    <a href="index.html">Inicio</a><a href="historia.html">Historia</a><a href="sanacion.html">Sanaci&#xF3;n</a>
+                    <a href="juego.html">El Juego</a><a href="herbolario.html">Herbolario</a><a href="tutorial.html">Tutorial</a>
+                    <a href="mecanicas.html">Mec&#xE1;nicas</a><a href="personajes.html">Personajes</a><a href="comunidad.html">Comunidad</a>
+                    <a href="equipo.html">Equipo</a><a href="desarrollo.html">Desarrollo</a>
+                </div>
+                <div style="display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+                    <a href="proximamente.html?red=discord" class="social-link" aria-label="Discord"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.08.11 18.1.13 18.116a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg></a>
+                    <a href="proximamente.html?red=instagram" class="social-link" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg></a>
+                    <a href="proximamente.html?red=twitter" class="social-link" aria-label="Twitter/X"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                    <a href="proximamente.html?red=youtube" class="social-link" aria-label="YouTube"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+                    <a href="proximamente.html?red=tiktok" class="social-link" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V9.15a8.16 8.16 0 0 0 4.77 1.52V7.2a4.85 4.85 0 0 1-1-.51z"/></svg></a>
+                </div>
+                <a href="https://asmodeu5.itch.io/curandero" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:0.6rem;margin-top:0.8rem;text-decoration:none;color:var(--accent);font-family:'Outfit',sans-serif;font-size:0.85rem;letter-spacing:1px;border:1px solid rgba(212,163,92,0.2);padding:0.5rem 1.4rem;border-radius:50px;transition:all 0.3s ease;background:rgba(212,163,92,0.05);">🎮 Jugar Curandero en itch.io ↗</a>
+                <div class="footer-credits"><p>Un proyecto de <strong>UtoFilms</strong> — Andres Moreno · Ronald Cantor · Diego Cerra</p><p>&copy; 2026 Curandero Game. Todos los derechos reservados.</p></div>
+            </div>
+        </footer>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

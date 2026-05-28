@@ -1,0 +1,1745 @@
+/* ==========================================
+   CURANDERO — Transmedia Page Styles
+   ========================================== */
+
+/* --- Design Tokens --- */
+:root {
+    --primary: #c2593b;
+    --primary-dark: #8c3a23;
+    --secondary: #1f3b28;
+    --secondary-light: #2a5238;
+    --accent: #d4a35c;
+    --accent-light: #e8c88a;
+    --text-light: #f5eedc;
+    --text-muted: #a09882;
+    --bg-dark: #070908;
+    --bg-section: #0a0e0c;
+    --glow-gold: rgba(212, 163, 92, 0.35);
+    --glow-primary: rgba(194, 89, 59, 0.3);
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+    --transition-smooth: cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* --- Reset --- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* ==========================================
+   CUSTOM CURSOR (JS Driven)
+   ========================================== */
+@media (pointer: fine) {
+    html, body {
+        cursor: none !important;
+    }
+    
+    .draggable-herb {
+        cursor: grab !important;
+    }
+    
+    .draggable-herb:active {
+        cursor: grabbing !important;
+    }
+}
+
+#custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 64px; /* Reduced scale to fit screen as a cursor */
+    height: 64px;
+    background-image: url('assets/CursorIdle.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 9999999;
+    transform: translate(-10%, -10%);
+    transform-origin: top left;
+}
+
+#custom-cursor.clicked {
+    background-image: url('assets/CursorClicked.png');
+    transform: translate(-10%, -10%) scale(0.9);
+}
+
+/* --- Particles Canvas --- */
+#particles-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.5;
+}
+
+/* ==========================================
+   INTRO — Jaguar Mouth Animation
+   ========================================== */
+#intro-container {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    will-change: opacity;
+    overflow: hidden;
+}
+
+.intro-glow {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--glow-gold) 0%, transparent 70%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(60px);
+    will-change: opacity;
+}
+
+.jaguar-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.jaw {
+    position: absolute;
+    width: 100%;
+    max-width: 900px;
+    object-fit: contain;
+    will-change: transform;
+    filter: invert(1);
+    pointer-events: none;
+}
+
+.upper-jaw {
+    top: 50%;
+    transform: translateY(-52%);
+    z-index: 3;
+}
+
+.lower-jaw {
+    top: 50%;
+    transform: translate(-1.5%, -48%);
+    z-index: 2;
+}
+
+.title-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.6);
+    width: 90%;
+    max-width: 950px;
+    z-index: 1;
+    opacity: 0;
+    will-change: transform, opacity;
+    pointer-events: none;
+    filter: drop-shadow(0 0 30px var(--glow-gold));
+}
+
+/* Scroll Hint */
+.scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 0.6s ease;
+}
+
+.scroll-hint.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.scroll-hint span {
+    font-size: 0.85rem;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: 0.7;
+    animation: hintPulse 2.5s ease-in-out infinite;
+}
+
+.scroll-mouse {
+    width: 26px;
+    height: 42px;
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    position: relative;
+    opacity: 0.6;
+}
+
+.scroll-wheel {
+    width: 4px;
+    height: 10px;
+    background: var(--accent);
+    border-radius: 2px;
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: scrollAnim 2s ease-in-out infinite;
+}
+
+@keyframes scrollAnim {
+    0% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(14px);
+    }
+}
+
+@keyframes hintPulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* ==========================================
+   NAVIGATION
+   ========================================== */
+#main-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9990;
+    padding: 1rem 2rem;
+    background: transparent;
+    transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.5s ease;
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+#main-nav.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+#main-nav.scrolled {
+    background: rgba(7, 9, 8, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid rgba(212, 163, 92, 0.08);
+}
+
+.nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo-img {
+    height: 95px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.nav-logo-img:hover {
+    opacity: 1;
+}
+
+.nav-links {
+    display: none;
+}
+
+.nav-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    margin-left: auto;
+}
+
+.nav-toggle span {
+    width: 28px;
+    height: 2px;
+    background: var(--text-light);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(7, 9, 8, 0.98);
+    backdrop-filter: blur(20px);
+    padding: 2rem;
+    gap: 1.5rem;
+    border-bottom: 1px solid rgba(212, 163, 92, 0.1);
+    align-items: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-family: 'StellaMystica', serif;
+    letter-spacing: 2px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: width 0.35s var(--transition-smooth);
+}
+
+.nav-links a:hover {
+    color: var(--accent);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* ==========================================
+   MAIN CONTENT
+   ========================================== */
+#main-content {
+    position: relative;
+    z-index: 1;
+    padding-top: 140vh;
+}
+
+/* --- Inner Page Adjustments --- */
+body.inner-page #main-content {
+    padding-top: 150px;
+    opacity: 1;
+}
+
+body.inner-page #main-nav {
+    transform: translateY(0);
+    opacity: 1;
+    background: rgba(7, 9, 8, 0.95);
+    border-bottom: 1px solid rgba(212, 163, 92, 0.1);
+}
+
+/* --- Media Section (Carousel & Video) --- */
+.media-section {
+    background: linear-gradient(180deg, var(--bg-section) 0%, var(--bg-dark) 100%);
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.media-section::before {
+    display: none;
+}
+
+.video-container {
+    width: 100%;
+    max-width: 900px;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border: 1px solid rgba(212, 163, 92, 0.3);
+    border-radius: var(--radius-lg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+}
+
+.video-placeholder {
+    color: var(--accent);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.carousel-container {
+    width: 100%;
+    max-width: 1000px;
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 163, 92, 0.3);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.carousel-slide {
+    min-width: 100%;
+    aspect-ratio: 16 / 9;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    padding: 3rem;
+}
+
+.carousel-caption {
+    background: rgba(7, 9, 8, 0.7);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem 2.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(212, 163, 92, 0.2);
+}
+
+.carousel-caption h3 {
+    margin-bottom: 0.5rem;
+}
+
+.carousel-caption p {
+    margin-bottom: 0;
+    font-size: 1rem;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(14, 21, 17, 0.7);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    font-size: 1.8rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.carousel-btn:hover {
+    background: var(--accent);
+    color: var(--bg-dark);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-prev {
+    left: 20px;
+}
+
+.carousel-next {
+    right: 20px;
+}
+
+/* --- Herbolario --- */
+.herb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.herb-card {
+    background: rgba(14, 21, 17, 0.6);
+    border: 1px solid rgba(212, 163, 92, 0.15);
+    border-radius: var(--radius-md);
+    padding: 2.5rem 2rem;
+    text-align: left;
+    transition: all 0.4s var(--transition-smooth);
+}
+
+.herb-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent);
+    background: rgba(31, 59, 40, 0.4);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+}
+
+.herb-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+/* --- Sections (generic) --- */
+section {
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 6rem 2rem;
+}
+
+section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(7, 9, 8, 0.4) 0%, rgba(7, 9, 8, 0.92) 100%);
+    z-index: 1;
+}
+
+/* --- Content Overlay Card --- */
+.content-overlay {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+    padding: 3.5rem;
+    border-radius: var(--radius-lg);
+    background: rgba(10, 14, 12, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(212, 163, 92, 0.1);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.content-overlay.alt-theme {
+    border-color: rgba(194, 89, 59, 0.15);
+}
+
+/* --- Reveal animation --- */
+.reveal-el {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s ease, transform 0.9s var(--transition-smooth);
+}
+
+.reveal-el.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================
+   TYPOGRAPHY
+   ========================================== */
+h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(212, 163, 92, 0.15);
+    letter-spacing: -1px;
+    line-height: 1.05;
+}
+
+h2 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.9);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+}
+
+h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent-light);
+    margin-bottom: 0.75rem;
+}
+
+p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    color: #d8d2c4;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.glyph-deco {
+    font-size: 2rem;
+    color: var(--accent);
+    opacity: 0.5;
+    margin-bottom: 1rem;
+    letter-spacing: 8px;
+    animation: glyphGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes glyphGlow {
+    from {
+        opacity: 0.3;
+        text-shadow: 0 0 10px transparent;
+    }
+
+    to {
+        opacity: 0.7;
+        text-shadow: 0 0 20px var(--glow-gold);
+    }
+}
+
+/* ==========================================
+   BUTTONS
+   ========================================== */
+.cta-button {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--text-light);
+    border: 1px solid rgba(212, 163, 92, 0.3);
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: inherit;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.4s var(--transition-smooth);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 8px 25px var(--glow-primary), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 14px 35px var(--glow-primary), 0 0 20px rgba(194, 89, 59, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: var(--accent);
+}
+
+.cta-button:hover::before {
+    opacity: 1;
+}
+
+.cta-button.secondary {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    box-shadow: none;
+}
+
+.cta-button.secondary:hover {
+    background: rgba(212, 163, 92, 0.1);
+    box-shadow: 0 8px 25px rgba(212, 163, 92, 0.15);
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+/* ==========================================
+   HERO SECTION
+   ========================================== */
+.hero-section {
+    background-attachment: fixed;
+}
+
+.hero-section::before {
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.15) 0%, rgba(7, 9, 8, 0.95) 75%);
+}
+
+/* ==========================================
+   LORE SECTION
+   ========================================== */
+.lore-section {
+    background: var(--bg-section);
+    flex-direction: column;
+}
+
+.lore-section::before {
+    display: none;
+}
+
+.lore-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    text-align: center;
+}
+
+.lore-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 4rem;
+    margin-top: 2.5rem;
+    text-align: left;
+    align-items: center;
+}
+
+.lore-text p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.lore-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1.8rem;
+    border-radius: var(--radius-md);
+    background: rgba(31, 59, 40, 0.25);
+    border: 1px solid rgba(212, 163, 92, 0.1);
+    transition: all 0.4s var(--transition-smooth);
+}
+
+.stat-item:hover {
+    background: rgba(31, 59, 40, 0.45);
+    border-color: rgba(212, 163, 92, 0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: inline;
+    line-height: 1;
+}
+
+.stat-number.is-infinity {
+    font-size: 3.5rem;
+}
+
+.stat-suffix {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+}
+
+.stat-label {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================
+   HEALING SECTION — Two Paths
+   ========================================== */
+.healing-section {
+    background-attachment: fixed;
+}
+
+.healing-paths {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    align-items: stretch;
+}
+
+.path-card {
+    flex: 1;
+    padding: 2.5rem 2rem;
+    border-radius: var(--radius-lg);
+    background: rgba(31, 59, 40, 0.35);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 163, 92, 0.12);
+    text-align: left;
+    transition: all 0.5s var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.path-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(212, 163, 92, 0.2), transparent 60%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.path-card:hover {
+    transform: translateY(-6px);
+    background: rgba(31, 59, 40, 0.55);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.path-card:hover::after {
+    opacity: 1;
+}
+
+.path-card.mystic {
+    background: rgba(60, 30, 50, 0.3);
+}
+
+.path-card.mystic:hover {
+    background: rgba(60, 30, 50, 0.5);
+}
+
+.path-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.path-card h3 {
+    color: var(--accent);
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+}
+
+.path-card p {
+    font-size: 1rem;
+    color: #bbb5a6;
+    margin-bottom: 1.5rem;
+}
+
+.path-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.path-features li {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.path-features li::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.6rem;
+    top: 5px;
+}
+
+.path-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.5rem;
+}
+
+.path-divider span {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    opacity: 0.5;
+    letter-spacing: 2px;
+}
+
+/* ==========================================
+   FEATURES SECTION
+   ========================================== */
+.features-section {
+    background: var(--bg-section);
+}
+
+.features-section::before {
+    display: none;
+}
+
+.features-content {
+    max-width: 1200px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+.feature-card {
+    background: rgba(14, 21, 17, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(212, 163, 92, 0.08);
+    padding: 2.5rem 1.8rem;
+    border-radius: var(--radius-md);
+    text-align: center;
+    transition: all 0.45s var(--transition-bounce);
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    background: rgba(31, 59, 40, 0.5);
+    border-color: rgba(212, 163, 92, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(212, 163, 92, 0.06);
+}
+
+.feature-card:hover::before {
+    opacity: 1;
+}
+
+.feature-icon {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+}
+
+.feature-card p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+/* ==========================================
+   COMMUNITY SECTION
+   ========================================== */
+.community-section {
+    background: linear-gradient(180deg, var(--bg-section) 0%, var(--bg-dark) 100%);
+}
+
+.community-section::before {
+    display: none;
+}
+
+.community-content {
+    text-align: center;
+    max-width: 650px;
+    position: relative;
+    z-index: 2;
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 0.75rem;
+    max-width: 500px;
+    margin: 0 auto 2rem;
+}
+
+.newsletter-input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    border: 1px solid rgba(212, 163, 92, 0.2);
+    background: rgba(14, 21, 17, 0.6);
+    backdrop-filter: blur(8px);
+    color: var(--text-light);
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.newsletter-input::placeholder {
+    color: var(--text-muted);
+}
+
+.newsletter-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(212, 163, 92, 0.1);
+}
+
+.social-links {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+}
+
+.social-link {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(212, 163, 92, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: all 0.35s var(--transition-smooth);
+    background: rgba(14, 21, 17, 0.4);
+}
+
+.social-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(212, 163, 92, 0.15);
+    background: rgba(31, 59, 40, 0.4);
+}
+
+/* ==========================================
+   FOOTER
+   ========================================== */
+footer {
+    background: #030404;
+    text-align: center;
+    padding: 4rem 2rem 3rem;
+    border-top: 1px solid rgba(212, 163, 92, 0.06);
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.footer-logo {
+    width: 260px;
+    opacity: 0.35;
+    transition: opacity 0.4s ease;
+}
+
+.footer-logo:hover {
+    opacity: 0.8;
+}
+
+.footer-links {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--accent);
+}
+
+footer p {
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 0;
+}
+
+/* ==========================================
+   INTERACTIVE SECTION (Generator & Carousel)
+   ========================================== */
+.interactive-section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+.interactive-section::before {
+    display: none;
+    /* Prevent standard section overlay from blocking clicks */
+}
+
+.interactive-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: stretch;
+}
+
+.interactive-col {
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* Prevents grid blowout from flex children */
+}
+
+/* --- Patient Generator (Interactive) --- */
+.patient-stage {
+    display: flex;
+    justify-content: center;
+    background: rgba(14, 21, 17, 0.5);
+    border: 1px solid rgba(212, 163, 92, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+}
+
+.patient-figure {
+    position: relative;
+    width: 260px;
+    height: 320px;
+}
+
+.patient-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.patient-card {
+    background: rgba(14, 21, 17, 0.6);
+    border: 1px solid rgba(212, 163, 92, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 3rem;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: center;
+}
+
+.patient-avatar-container {
+    width: 100%;
+    max-width: 320px;
+    height: 380px;
+    position: relative;
+    border-radius: var(--radius-md);
+    background: radial-gradient(circle, rgba(212, 163, 92, 0.15) 0%, transparent 70%);
+    overflow: hidden;
+}
+
+.patient-part {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-position: center center;
+    /* Default centering */
+    object-fit: contain;
+    transition: opacity 0.5s ease;
+}
+
+/* Base layering: Body -> Head -> Face features */
+#p-body {
+    z-index: 1;
+    transform-origin: center 20%;
+    /* Zoom into the neck/chest area */
+    transform: scale(2.8) translateY(75px);
+    /* Move body down and make it slightly larger */
+}
+
+#p-head {
+    z-index: 5;
+    transform-origin: center center;
+    transform: translate(-5px, -20%) scale(0.60);
+    /* Make head 0.55 size and move slightly left */
+}
+
+#p-eye-l,
+#p-eye-r,
+#p-nose,
+#p-mouth {
+    z-index: 10;
+    transform-origin: center center;
+    transform: translate(-5px, -20%) scale(0.60);
+    /* Match head translation and scale */
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+@media (max-width: 900px) {
+    .interactive-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .carousel-container {
+        min-height: 350px;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .lore-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    .lore-stats {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .stat-item {
+        flex: 1;
+        min-width: 160px;
+    }
+
+    .healing-paths {
+        flex-direction: column;
+    }
+
+    .path-divider {
+        padding: 0.5rem 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .content-overlay {
+        padding: 2rem 1.5rem;
+    }
+
+    .jaw {
+        max-width: 90vw;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .newsletter-form {
+        flex-direction: column;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* ==========================================
+   HERBOLARIO - MIX STATION & BOOK
+   ========================================== */
+.mix-station {
+    position: fixed;
+    bottom: 70px;
+    right: 40px;
+    z-index: 1000;
+    width: 250px;
+    height: 250px;
+    pointer-events: auto;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8));
+}
+
+.bowl-dropzone {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.bowl-dropzone.drag-over {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 30px var(--glow-gold));
+}
+
+.bowl-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+}
+
+#dropped-items-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.dropped-clone {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    transition: opacity 1s ease;
+}
+
+.dropped-clone.fade-out {
+    opacity: 0;
+}
+
+.item-holder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -70%) scale(0);
+    width: 120px;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    mix-blend-mode: screen;
+}
+
+.item-holder.fire-anim {
+    opacity: 1;
+    animation: fireFlicker 0.15s infinite;
+}
+
+@keyframes fireFlicker {
+    0% { opacity: 0.8; transform: translate(-50%, -70%) scale(1.2) translate(1px, -2px); filter: drop-shadow(0 0 20px #ff6600) hue-rotate(0deg); }
+    20% { opacity: 1; transform: translate(-50%, -70%) scale(1.3) translate(-2px, 1px); }
+    40% { opacity: 0.6; transform: translate(-50%, -70%) scale(1.35) translate(2px, -1px); }
+    60% { opacity: 0.9; transform: translate(-50%, -70%) scale(1.25) translate(-1px, 3px); filter: drop-shadow(0 0 50px #ffcc00) hue-rotate(20deg);  }
+    80% { opacity: 0.5; transform: translate(-50%, -70%) scale(1.4) translate(1px, 0px); }
+    100% { opacity: 1; transform: translate(-50%, -70%) scale(1.2) translate(0px, -3px); filter: drop-shadow(0 0 30px #ff3300) hue-rotate(-10deg); }
+}
+
+.draggable-herb {
+    cursor: grab;
+    transition: transform 0.2s;
+}
+
+.draggable-herb:active {
+    cursor: grabbing;
+}
+
+.draggable-herb.dragging {
+    opacity: 0.5;
+    transform: scale(0.9);
+}
+
+.book-widget {
+    position: fixed;
+    bottom: 40px;
+    left: 40px;
+    z-index: 1000;
+    width: 420px;
+    pointer-events: none;
+    filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6));
+    animation: floatingBook 4s ease-in-out infinite;
+}
+
+@keyframes floatingBook {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-12px) rotate(2deg); }
+}
+
+@media (max-width: 480px) {
+    section {
+        padding: 4rem 1rem;
+    }
+
+    .path-card {
+        padding: 1.8rem 1.2rem;
+    }
+
+    .scroll-hint span {
+        font-size: 0.7rem;
+    }
+}
+
+/* ==========================================
+   FIXES & ENHANCEMENTS
+   ========================================== */
+
+/* Pages hub — disable dark overlay so cards are fully visible */
+.pages-hub::before { display: none; }
+.pages-hub { min-height: auto; }
+
+/* Non-immersive inner sections auto-size to content */
+.chars-section,
+.procedural-section,
+.generator-section,
+.video-section,
+.steps-section,
+.tips-section,
+.recipe-section,
+.diag-section,
+.essences-section,
+.score-section {
+    min-height: auto;
+}
+
+/* ── Shared page hero for inner pages ── */
+.page-hero {
+    min-height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 7rem 2rem 3.5rem;
+    background: var(--bg-section);
+    position: relative;
+    overflow: hidden;
+}
+.page-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('assets/Bg_gameplay1.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.12;
+}
+.page-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 80%, rgba(212,163,92,0.04) 0%, transparent 60%);
+}
+.page-hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 750px;
+}
+
+/* ── Index page carousel wrap ── */
+.carousel-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.carousel-window {
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212,163,92,0.2);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    background: #000;
+    aspect-ratio: 16 / 9;
+}
+.carousel-window .carousel-track {
+    height: 100%;
+}
+.carousel-window .carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    padding: 0;
+    aspect-ratio: unset;
+}
+.carousel-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.carousel-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+.carousel-controls .carousel-btn {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    transform: none;
+}
+.carousel-controls .carousel-btn:hover {
+    transform: scale(1.1);
+}
+
+/* ── Interactive section columns ── */
+.interactive-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+.patient-generator-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ── Patient dialog card (personajes.html generator) ── */
+.patient-dialog-card {
+    background: rgba(14,21,17,0.65);
+    border: 1px solid rgba(212,163,92,0.15);
+    border-radius: var(--radius-md);
+    padding: 1.5rem 1.8rem;
+    width: 100%;
+    max-width: 380px;
+    text-align: left;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.patient-dialog-name {
+    font-family: 'StellaMystica', serif;
+    font-size: 1.3rem;
+    color: var(--accent-light);
+    display: block;
+    margin-bottom: 0.4rem;
+    letter-spacing: 1px;
+}
+.patient-dialog-ailment {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+}
+.patient-dialog-ailment.fuego  { color:#c2593b; border:1px solid rgba(194,89,59,0.4);  background:rgba(194,89,59,0.08); }
+.patient-dialog-ailment.frio   { color:#5b9fd4; border:1px solid rgba(91,159,212,0.4); background:rgba(91,159,212,0.08); }
+.patient-dialog-ailment.veneno { color:#6bbf5c; border:1px solid rgba(107,191,92,0.4); background:rgba(107,191,92,0.08); }
+.patient-dialog-text {
+    font-size: 0.92rem;
+    font-style: italic;
+    color: #b0a999;
+    line-height: 1.75;
+    border-left: 2px solid rgba(212,163,92,0.2);
+    padding-left: 0.9rem;
+    margin-bottom: 1rem;
+}
+.patient-dialog-text .kw-fuego  { color:#e07050; font-weight:700; }
+.patient-dialog-text .kw-frio   { color:#6db3e8; font-weight:700; }
+.patient-dialog-text .kw-veneno { color:#7fd468; font-weight:700; }
+.patient-urgency { display:flex; align-items:center; gap:0.8rem; }
+.urgency-label { font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:2px; font-family:'Outfit',sans-serif; }
+.urgency-dots { display:flex; gap:4px; }
+.urgency-dots span { width:8px; height:8px; border-radius:50%; background:rgba(212,163,92,0.12); border:1px solid rgba(212,163,92,0.2); }
+.urgency-dots span.filled { background:var(--accent); border-color:var(--accent); box-shadow:0 0 6px rgba(212,163,92,0.35); }
+
+/* Patient reveal animation */
+@keyframes patientReveal {
+    from { opacity: 0; transform: scale(0.96) translateY(8px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+.patient-figure.flash .patient-layer {
+    animation: patientReveal 0.45s ease forwards;
+}
+.patient-dialog-card.flash {
+    animation: patientReveal 0.45s ease forwards;
+}
+
+/* ── Footer credits visibility ── */
+.footer-credits {
+    border-top: 1px solid rgba(212,163,92,0.06);
+    padding-top: 1.2rem;
+    margin-top: 1rem;
+}
+.footer-credits p {
+    font-size: 0.78rem;
+    color: #706860;
+    margin: 0 0 0.2rem;
+}
+.footer-credits p:last-child {
+    font-size: 0.75rem;
+    color: #5e5650;
+    margin: 0;
+}
+.footer-credits strong { color: #8a8078; }
+
+/* ── Fix: remove dark overlay from inner-page sections without background images ──
+   The global section::before gradient covers content that isn't wrapped in z-index:2.
+   Inner-page sections use solid dark backgrounds so the overlay is redundant. */
+body.inner-page section:not(.page-hero):not(.healing-section):not(.lore-section)::before {
+    display: none;
+}
+/* Inner-page sections auto-size to content (no forced 100vh) */
+body.inner-page section:not(.page-hero) {
+    min-height: auto;
+}
+
+/* Force consistent patient-figure dimensions across pages so ID-based transforms
+   (which use % and px calculated for 260×320) work identically on every page */
+#patient-figure-chars,
+#patient-figure-index {
+    width: 260px !important;
+    height: 320px !important;
+}
+
+/* ── Patient figure: individual layer control (sprites are NOT same-scale canvases) ──
+   Body needs 2.8× zoom to show upper torso; head needs 0.6× shrink to match body.
+   Key fix: change head/face translate from -20% (too high) to +5% (aligns chin with body neck). */
+#p-body  { z-index: 1;  transform-origin: center 20%;    transform: scale(2.8) translateY(75px); }
+#p-head  { z-index: 5;  transform-origin: center center; transform: translate(-5px, -10%) scale(0.60); }
+#p-nose  { z-index: 8;  transform-origin: center center; transform: translate(-5px, -10%) scale(0.60); }
+#p-mouth { z-index: 9;  transform-origin: center center; transform: translate(-5px, -10%) scale(0.60); }
+#p-eye-l { z-index: 10; transform-origin: center center; transform: translate(-5px, -10%) scale(0.60); }
+#p-eye-r { z-index: 10; transform-origin: center center; transform: translate(-5px, -10%) scale(0.60); }
+
+/* Patient figure clips overflow from the zoomed body layer */
+.patient-figure {
+    overflow: hidden;
+    transform: none;
+}
+
+/* Stage also clips and aligns figure to top for portrait crop */
+.patient-stage {
+    overflow: hidden;
+    align-items: flex-start;
+}
+
+/* ── Jaguar popup (newsletter success) ── */
+.jaguar-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 999999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+.jaguar-popup-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.jaguar-popup-card {
+    background: rgba(7, 12, 9, 0.97);
+    border: 1px solid rgba(212, 163, 92, 0.35);
+    border-radius: var(--radius-lg);
+    padding: 3rem 2.5rem 2.5rem;
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 80px rgba(212,163,92,0.06);
+    transform: scale(0.82) translateY(30px);
+    transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.jaguar-popup-overlay.active .jaguar-popup-card {
+    transform: scale(1) translateY(0);
+}
+.jaguar-popup-glyph {
+    font-size: 0.8rem;
+    letter-spacing: 8px;
+    color: var(--accent);
+    opacity: 0.4;
+    margin-bottom: 1rem;
+    display: block;
+}
+.jaguar-popup-icon {
+    font-size: 4.5rem;
+    display: block;
+    margin-bottom: 1.2rem;
+    filter: drop-shadow(0 0 24px rgba(212,163,92,0.5));
+    animation: jaguarPulse 3s ease-in-out infinite;
+}
+@keyframes jaguarPulse {
+    0%, 100% { transform: scale(1) rotate(-4deg); filter: drop-shadow(0 0 20px rgba(212,163,92,0.4)); }
+    50%       { transform: scale(1.08) rotate(4deg); filter: drop-shadow(0 0 40px rgba(212,163,92,0.7)); }
+}
+.jaguar-popup-card h3 {
+    font-family: 'StellaMystica', serif;
+    font-weight: normal;
+    color: var(--accent);
+    font-size: 1.9rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.8rem;
+}
+.jaguar-popup-card p {
+    color: #b8b1a4;
+    font-size: 0.98rem;
+    line-height: 1.75;
+    margin-bottom: 1.8rem;
+    text-shadow: none;
+}
+.jaguar-popup-divider {
+    width: 60px;
+    height: 1px;
+    background: rgba(212,163,92,0.3);
+    margin: 1.2rem auto;
+}
+.jaguar-popup-close {
+    font-size: 0.9rem;
+    padding: 0.7rem 2.2rem;
+    letter-spacing: 2px;
+}
+.jaguar-popup-esc {
+    display: block;
+    margin-top: 0.8rem;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    opacity: 0.5;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'Outfit', sans-serif;
+}
+
+/* ── Responsive extras ── */
+@media (max-width: 768px) {
+    .interactive-columns { grid-template-columns: 1fr; }
+    .patient-stage { max-width: 240px; margin: 0 auto; }
+    .patient-dialog-card { max-width: 100%; }
+}

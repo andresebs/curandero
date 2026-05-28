@@ -1,0 +1,449 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curandero — Herencia Precolombina | Juego Indie de Sanación Ancestral</title>
+    <meta name="description" content="Curandero es un juego indie de estrategia y sanación ancestral inspirado en culturas precolombinas. Diagnostica enfermedades, prepara remedios con herbolaria sagrada y salva a tu pueblo del jaguar. Gratis en itch.io.">
+    <meta name="keywords" content="Curandero, juego indie, herbolaria precolombina, medicina ancestral, sanación, estrategia, gratis, itch.io, UtoFilms">
+    <meta name="author" content="UtoFilms — Andres Moreno, Ronald Cantor, Diego Cerra">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://asmodeu5.itch.io/curandero">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Curandero — Herencia Precolombina">
+    <meta property="og:title" content="Curandero — Juego Indie de Sanación Ancestral Precolombina">
+    <meta property="og:description" content="Eres el último curandero. Diagnostica enfermedades, prepara remedios con herbolaria sagrada y salva a tu pueblo. Gratis en itch.io.">
+    <meta property="og:image" content="assets/Title Main.png">
+    <meta property="og:locale" content="es_ES">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Curandero — Juego Indie de Sanación Ancestral">
+    <meta name="twitter:description" content="Diagnostica enfermedades ancestrales, prepara remedios con herbolaria sagrada y salva a tu pueblo. Gratis en itch.io.">
+    <meta name="twitter:image" content="assets/Title Main.png">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'StellaMystica';
+            src: url('assets/GL-StellaMystica.ttf') format('truetype');
+            font-weight: normal; font-style: normal; font-display: swap;
+        }
+        h1, h2, h3, .stella {
+            font-family: 'StellaMystica', serif;
+            font-weight: normal;
+        }
+        h1 { font-size: clamp(2.8rem, 7vw, 5.5rem); letter-spacing: 3px; }
+        h2 { font-size: clamp(2rem, 5vw, 3.8rem); letter-spacing: 2px; }
+        h3 { letter-spacing: 1.5px; }
+
+        /* ── Page cards (hub de navegación) ── */
+        .pages-hub {
+            background: var(--bg-dark);
+            padding: 3rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .pages-hub-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .pages-hub-header p {
+            max-width: 600px;
+            margin: 0 auto;
+            color: #b8b1a4;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.4rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+        .page-card {
+            position: relative;
+            background: rgba(14, 21, 17, 0.7);
+            border: 1px solid rgba(212, 163, 92, 0.1);
+            border-radius: var(--radius-md);
+            padding: 2.2rem 1.4rem 1.8rem;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.4s var(--transition-bounce);
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .page-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(31,59,40,0.2), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .page-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(212,163,92,0.4);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6), 0 0 40px rgba(212,163,92,0.05);
+        }
+        .page-card:hover::before { opacity: 1; }
+        .page-card-num {
+            position: absolute;
+            top: 0.6rem;
+            right: 0.8rem;
+            font-family: 'StellaMystica', serif;
+            font-size: 0.85rem;
+            color: var(--accent);
+            opacity: 0.3;
+        }
+        .page-card-icon {
+            font-size: 2.4rem;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+        .page-card-title {
+            font-family: 'StellaMystica', serif;
+            font-size: 1.1rem;
+            color: var(--accent-light);
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+        .page-card-desc {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+        .page-card-arrow {
+            font-size: 0.75rem;
+            color: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        .page-card:hover .page-card-arrow {
+            opacity: 0.8;
+            transform: translateX(4px);
+        }
+        /* Special highlight for play card */
+        .page-card.play-card {
+            border-color: rgba(212,163,92,0.25);
+            background: rgba(212,163,92,0.04);
+        }
+        .page-card.play-card .page-card-title { color: var(--accent); }
+
+        /* ── Interactive section (generator) ── */
+        .interactive-section {
+            padding-top: 6rem;
+            padding-bottom: 6rem;
+        }
+        .interactive-section::before { display: none; }
+
+        @media (max-width: 1024px) { .pages-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (max-width: 768px)  { .pages-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 520px)  { .pages-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient particles -->
+    <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+    <!-- ====== INTRO: Jaguar Mouth ====== -->
+    <div id="intro-container">
+        <div class="intro-glow" id="intro-glow"></div>
+        <div class="jaguar-wrapper">
+            <img src="assets/Title Main.png" alt="Curandero logo" class="title-logo" id="title-logo">
+            <img src="assets/Upper mouth.png" alt="Boca superior del jaguar" class="jaw upper-jaw" id="upper-jaw">
+            <img src="assets/Lower mouth.png" alt="Boca inferior del jaguar" class="jaw lower-jaw" id="lower-jaw">
+        </div>
+        <div class="scroll-hint" id="scroll-hint">
+            <span>Desplaza para despertar</span>
+            <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== NAVIGATION ====== -->
+    <nav id="main-nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <img src="assets/Title Main.png" alt="Curandero" class="nav-logo-img">
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" style="color: var(--accent);">Inicio</a></li>
+                <li><a href="historia.html">Historia</a></li>
+                <li><a href="sanacion.html">Sanaci&#xF3;n</a></li>
+                <li><a href="juego.html">El Juego</a></li>
+                <li><a href="herbolario.html">Herbolario</a></li>
+                <li><a href="tutorial.html">Tutorial</a></li>
+                <li><a href="mecanicas.html">Mec&#xE1;nicas</a></li>
+                <li><a href="personajes.html">Personajes</a></li>
+                <li><a href="comunidad.html">Comunidad</a></li>
+                <li><a href="equipo.html">Equipo</a></li>
+                <li><a href="desarrollo.html">Desarrollo</a></li>
+            </ul>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ====== MAIN CONTENT ====== -->
+    <main id="main-content">
+
+        <!-- HERO -->
+        <section class="hero-section" id="hero" style="background-image: url('assets/Bg_gameplay1.png');">
+            <div class="content-overlay">
+                <div class="glyph-deco">✦</div>
+                <h1>El Despertar de la Sanación</h1>
+                <p>En el corazón de la selva virgen, un conocimiento ancestral aguarda ser redescubierto. Tú eres el último curandero. Salva a tu pueblo utilizando la sagrada herbolaria y los rituales místicos heredados de tus antepasados.</p>
+                <div class="hero-buttons">
+                    <a href="https://asmodeu5.itch.io/curandero" target="_blank" rel="noopener" class="cta-button" style="text-decoration: none;">🎮 Jugar Ahora en itch.io ↗</a>
+                    <a href="historia.html" class="cta-button secondary" style="text-decoration: none;">Conoce la Historia</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- GENERADOR DE PACIENTES + CAROUSEL -->
+        <section class="interactive-section" id="interactive" style="background: linear-gradient(180deg, var(--bg-dark) 0%, #050d07 50%, var(--bg-dark) 100%);">
+            <div style="max-width:1200px; width:100%; margin:0 auto;">
+                <div style="text-align:center; margin-bottom: 2.5rem;">
+                    <div class="glyph-deco">⚗</div>
+                    <h2>El Pueblo te Espera</h2>
+                    <p style="max-width:620px; margin:0 auto; color:#b8b1a4; font-size:1rem;">Cada habitante del pueblo es único — generado por el azar, portador de un mal distinto. Diagnostica, prepara el remedio y salva a tu gente.</p>
+                </div>
+                <div class="interactive-columns">
+                    <!-- Patient Generator -->
+                    <div class="patient-generator-wrap">
+                        <div class="patient-stage">
+                            <div class="patient-figure" id="patient-figure-index">
+                                <img id="p-body" src="assets/patients/Body 1.png" alt="Cuerpo del paciente" class="patient-layer" style="z-index:1;">
+                                <img id="p-head" src="assets/patients/Head_1.png" alt="Cabeza del paciente" class="patient-layer" style="z-index:2;">
+                                <img id="p-nose" src="assets/patients/Nose_1.png" alt="Nariz del paciente" class="patient-layer" style="z-index:3;">
+                                <img id="p-mouth" src="assets/patients/Mouth_1.png" alt="Boca del paciente" class="patient-layer" style="z-index:4;">
+                                <img id="p-eye-l" src="assets/patients/eyes/L_1.png" alt="Ojo izquierdo del paciente" class="patient-layer" style="z-index:5;">
+                                <img id="p-eye-r" src="assets/patients/eyes/R_1.png" alt="Ojo derecho del paciente" class="patient-layer" style="z-index:6;">
+                            </div>
+                        </div>
+                        <button id="generate-patient-btn" class="cta-button" style="margin-top:1.5rem; padding:0.8rem 2.5rem; max-width:280px; width:100%;">
+                            ✦ Invocar Paciente
+                        </button>
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.6rem; text-align:center;">
+                            <a href="personajes.html" style="color:var(--accent); text-decoration:none;">Ver todos los personajes →</a>
+                        </p>
+                    </div>
+                    <!-- Carousel -->
+                    <div class="carousel-wrap">
+                        <div class="carousel-window">
+                            <div class="carousel-track" id="carousel-track">
+                                <div class="carousel-slide"><img src="assets/carrousel/gameplay.png" alt="Gameplay de Curandero — diagnóstico de pacientes" class="carousel-img"></div>
+                                <div class="carousel-slide"><img src="assets/carrousel/Mezclas.png" alt="Sistema de mezclas y recetario sagrado" class="carousel-img"></div>
+                                <div class="carousel-slide"><img src="assets/carrousel/Mix station.png" alt="Estación de mezcla del curandero" class="carousel-img"></div>
+                                <div class="carousel-slide"><img src="assets/carrousel/Title.png" alt="Curandero — Herencia Precolombina" class="carousel-img"></div>
+                            </div>
+                        </div>
+                        <div class="carousel-controls">
+                            <button id="carousel-prev" class="carousel-btn" aria-label="Imagen anterior">←</button>
+                            <button id="carousel-next" class="carousel-btn" aria-label="Imagen siguiente">→</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NAVIGATION HUB — 10 páginas -->
+        <section class="pages-hub">
+            <div class="pages-hub-header">
+                <div class="glyph-deco">◆</div>
+                <h2>Explora el Universo Curandero</h2>
+                <p>Cada sección es un capítulo distinto del mundo de Curandero. Explóralos en el orden que sientas que el jaguar te llama.</p>
+            </div>
+
+            <div class="pages-grid">
+
+                <a href="historia.html" class="page-card">
+                    <span class="page-card-num">I</span>
+                    <span class="page-card-icon">📜</span>
+                    <span class="page-card-title">Historia</span>
+                    <span class="page-card-desc">El lore, la leyenda y el origen del linaje curandero</span>
+                    <span class="page-card-arrow">→</span>
+                </a>
+
+                <a href="sanacion.html" class="page-card">
+                    <span class="page-card-num">II</span>
+                    <span class="page-card-icon">🌿</span>
+                    <span class="page-card-title">Sanación</span>
+                    <span class="page-card-desc">Los dos caminos: herbolaria ancestral y magia espiritual</span>
+                    <span class="page-card-arrow">→</span>
+                </a>
+
+                <a href="juego.html" class="page-card">
+                    <span class="page-card-num">III</span>
+                    <span class="page-card-icon">🌎</span>
+                    <span class="page-card-title">El Juego</span>
+                    <span class="page-card-desc">El mundo vivo y místico de Curandero y sus características</span>
+                    <span class="page-card-arrow">→</span>
+                </a>
+
+                <a href="herbolario.html" class="page-card">
+                    <span class="page-card-num">IV</span>
+                    <span class="page-card-icon">🍄</span>
+                    <span class="page-card-title">Herbolario</span>
+                    <span class="page-card-desc">Los ingredientes sagrados: animales, minerales y vegetales</span>
+                    <span class="page-card-arrow">→</span>
+                </a>
+
+                <a href="tutorial.html" class="page-card">
+                    <span class="page-card-num">V</span>
+                    <span class="page-card-icon">▶</span>
+                    <span class="page-card-title">Tutorial</span>
+                    <span class="page-card-desc">Video oficial y los seis pasos del curandero maestro</span>
+                    <span class="page-card-arrow">→</span>
+                </a>
+
+                <a href="mecanicas.html" class="page-card">
+                    <span class="page-card-num">VI</span>
+                    <span class="page-card-icon">⚗</span>
+                    <span class="page-card-title">Mecánicas</span>
+                    <span class="page-card-desc">Diagnóstico, las tres esencias y el sistema de puntuación</span>
+                    <span class="page-card-arrow">→</span>
+                </a>
+
+                <a href="personajes.html" class="page-card">
+                    <span class="page-card-num">VII</span>
+                    <span class="page-card-icon">👁</span>
+                    <span class="page-card-title">Personajes</span>
+                    <span class="page-card-desc">Los pacientes del pueblo y el sistema procedural de generación</span>
+                    <span class="page-card-arrow">→</span>
+                </a>
+
+                <a href="comunidad.html" class="page-card">
+                    <span class="page-card-num">VIII</span>
+                    <span class="page-card-icon">🌱</span>
+                    <span class="page-card-title">Comunidad</span>
+                    <span class="page-card-desc">Únete a la tribu y recibe acceso anticipado al contenido</span>
+                    <span class="page-card-arrow">→</span>
+                </a>
+
+                <a href="equipo.html" class="page-card">
+                    <span class="page-card-num">IX</span>
+                    <span class="page-card-icon">🎭</span>
+                    <span class="page-card-title">Equipo</span>
+                    <span class="page-card-desc">UtoFilms: las tres personas que construyeron este mundo</span>
+                    <span class="page-card-arrow">→</span>
+                </a>
+
+                <a href="desarrollo.html" class="page-card">
+                    <span class="page-card-num">X</span>
+                    <span class="page-card-icon">⚙️</span>
+                    <span class="page-card-title">Desarrollo</span>
+                    <span class="page-card-desc">Detrás del altar: investigación y creación de Curandero</span>
+                    <span class="page-card-arrow">→</span>
+                </a>
+
+            </div>
+
+            <div style="margin-top: 2rem; text-align: center;" class="">
+                <a href="https://asmodeu5.itch.io/curandero" target="_blank" rel="noopener" class="cta-button" style="text-decoration: none; font-size: 1.1rem; padding: 1rem 3rem;">
+                    🎮 Jugar Gratis en itch.io ↗
+                </a>
+            </div>
+        </section>
+
+        <!-- COMUNIDAD / NEWSLETTER -->
+        <section class="community-section" id="comunidad" style="padding: 3rem 1rem; border-top: 1px solid rgba(212,163,92,0.05); background: radial-gradient(circle at 50% 0%, rgba(212,163,92,0.03) 0%, transparent 70%);">
+            <div class="community-content" style="max-width: 800px; margin: 0 auto; text-align: center;">
+                <div class="glyph-deco">🌿</div>
+                <h2>Únete a la Tribu</h2>
+                <p style="color: #b8b1a4; font-size: 1.1rem; margin-bottom: 1rem;">Sé de los primeros en conocer las novedades. Recibe acceso anticipado, contenido exclusivo y participa en la creación del juego y expansiones futuras.</p>
+                <form class="newsletter-form" id="newsletter-form" style="display: flex; gap: 1rem; justify-content: center; max-width: 500px; margin: 0 auto 3rem auto;">
+                    <input type="email" placeholder="Tu correo electrónico" class="newsletter-input" id="newsletter-email" required style="flex: 1; padding: 0.8rem 1.2rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(212,163,92,0.2); color: var(--text-light); border-radius: 4px; font-family: 'Outfit', sans-serif;">
+                    <button type="submit" class="cta-button" style="padding: 0.8rem 2rem;">Unirse</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer id="footer">
+            <div class="footer-content" style="max-width:1100px;">
+                <img src="assets/Title Main.png" alt="Curandero" class="footer-logo">
+                <div class="footer-links">
+                    <a href="index.html">Inicio</a><a href="historia.html">Historia</a><a href="sanacion.html">Sanaci&#xF3;n</a>
+                    <a href="juego.html">El Juego</a><a href="herbolario.html">Herbolario</a><a href="tutorial.html">Tutorial</a>
+                    <a href="mecanicas.html">Mec&#xE1;nicas</a><a href="personajes.html">Personajes</a><a href="comunidad.html">Comunidad</a>
+                    <a href="equipo.html">Equipo</a><a href="desarrollo.html">Desarrollo</a>
+                </div>
+                <div style="display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+                    <a href="proximamente.html?red=discord" class="social-link" aria-label="Discord"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.08.11 18.1.13 18.116a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg></a>
+                    <a href="proximamente.html?red=instagram" class="social-link" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg></a>
+                    <a href="proximamente.html?red=twitter" class="social-link" aria-label="Twitter/X"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                    <a href="proximamente.html?red=youtube" class="social-link" aria-label="YouTube"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+                    <a href="proximamente.html?red=tiktok" class="social-link" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V9.15a8.16 8.16 0 0 0 4.77 1.52V7.2a4.85 4.85 0 0 1-1-.51z"/></svg></a>
+                </div>
+                <a href="https://asmodeu5.itch.io/curandero" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:0.6rem;margin-top:0.8rem;text-decoration:none;color:var(--accent);font-family:'Outfit',sans-serif;font-size:0.85rem;letter-spacing:1px;border:1px solid rgba(212,163,92,0.2);padding:0.5rem 1.4rem;border-radius:50px;background:rgba(212,163,92,0.05);">🎮 Jugar Curandero en itch.io ↗</a>
+                <div class="footer-credits">
+                    <p>Un proyecto de <strong>UtoFilms</strong> — Andres Moreno · Ronald Cantor · Diego Cerra</p>
+                    <p>&copy; 2026 Curandero Game. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Curandero",
+      "alternateName": "Curandero — Herencia Precolombina",
+      "description": "Curandero es un juego indie de estrategia y sanación ancestral inspirado en culturas precolombinas de América. Diagnostica enfermedades, prepara remedios herbales y rituales, y salva a tu pueblo del desequilibrio espiritual.",
+      "genre": ["Strategy", "Simulation", "Indie", "Puzzle"],
+      "gamePlatform": "Web Browser",
+      "applicationCategory": "Game",
+      "operatingSystem": "Web",
+      "url": "https://asmodeu5.itch.io/curandero",
+      "inLanguage": "es",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "UtoFilms",
+        "member": [
+          {"@type": "Person", "name": "Andres Moreno"},
+          {"@type": "Person", "name": "Ronald Cantor"},
+          {"@type": "Person", "name": "Diego Cerra"}
+        ]
+      },
+      "keywords": "curandero, herbolaria, precolombino, medicina ancestral, indie game, sanación, estrategia",
+      "about": {
+        "@type": "Thing",
+        "name": "Medicina ancestral precolombina",
+        "description": "Tradiciones de sanación de culturas indígenas de América Latina"
+      }
+    }
+    </script>
+</body>
+</html>
